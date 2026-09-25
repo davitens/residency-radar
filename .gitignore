@@ -1,0 +1,25 @@
+# local CV / personal data
+cv.tex
+cv.pdf
+data/cv*.txt
+
+# generated data
+data/programs.json
+data/ranked*.json
+data/cache/
+data/enrich_cache/
+data/llm_cache/
+exports/
+site/
+site_example/
+candidates.json
+data/candidates.json
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# tooling scratch
+.superpowers/

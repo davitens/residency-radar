@@ -1,0 +1,36 @@
+name: Update residency rankings
+
+# This workflow is a template. It needs a CV in the repo to run.
+# Either commit your `cv.tex` (removed from .gitignore) or write it from a
+# secret in a step before `src.cv_to_text`. Until then, run it manually only.
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 6 * * 1" # Mondays 06:00 UTC
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python -m src.cv_to_text
+      - run: ENABLE_ENRICH=0 python -m src.fetch
+      - run: python -m src.match
+      - run: python -m src.build_site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4

@@ -1,0 +1,140 @@
+settings:
+  rate_limit_s: 2.0
+  cache_ttl_s: 86400
+  user_agent: "residency-radar/0.1 (personal research; https://github.com/davitens/residency-radar)"
+
+# type: page       -> program page; ranked via its specific offer pages (offer_links / auto-discovery),
+#                     or the page itself as a program_page when no specific offer exists
+# type: greenhouse | lever | ashby -> public ATS JSON of specific, active offers
+#
+# offer_links: explicit list of specific offer/apply URLs for a program.
+#   []  = program has no separate offer page; rank the program page itself.
+#   omitted = auto-discover same-domain /apply,/residency,/fellowship,/program/<x> links.
+sources:
+  # --- residency / fellowship programs ------------------------------------
+  - name: "MATS"
+    type: page
+    url: "https://www.matsprogram.org/"
+    org: "MATS"
+    title: "ML Alignment Theory Scholars (MATS)"
+    offer_links: ["https://www.matsprogram.org/residency"]
+  - {name: "AI Safety Camp", type: page, url: "https://www.aisafety.camp/", org: "AI Safety Camp", title: "AI Safety Camp", offer_links: []}
+  - name: "ERA Fellowship"
+    type: page
+    url: "https://erafellowship.org/"
+    org: "Existential Risk Alliance"
+    title: "ERA Fellowship"
+    offer_links: ["https://erafellowship.org/fellowship-1"]
+  - {name: "Nonlinear", type: page, url: "https://www.nonlinear.org/", org: "Nonlinear", title: "Nonlinear Research Fellowship", offer_links: []}
+  - name: "FAR AI"
+    type: page
+    url: "https://www.far.ai/"
+    org: "FAR AI"
+    title: "FAR AI Research Fellowship"
+    offer_links: ["https://www.far.ai/programs"]
+  - {name: "Redwood Research", type: page, url: "https://www.redwoodresearch.org/", org: "Redwood Research", title: "Redwood Research Program", offer_links: []}
+  - {name: "Apollo Research", type: page, url: "https://www.apolloresearch.ai/", org: "Apollo Research", title: "Apollo Research Program", offer_links: []}
+  - {name: "EleutherAI", type: page, url: "https://www.eleuther.ai/", org: "EleutherAI", title: "EleutherAI Research Program", offer_links: []}
+  - name: "Cohere For AI"
+    type: page
+    url: "https://cohere.com/research"
+    org: "Cohere For AI"
+    title: "Cohere For AI Scholars"
+    offer_links: ["https://cohere.com/research/scholars-program"]
+  - {name: "Allen Institute for AI", type: page, url: "https://allenai.org/careers", org: "AI2", title: "AI2 Research Careers and Internships", offer_links: []}
+  - {name: "Recurse Center", type: page, url: "https://www.recurse.com/", org: "Recurse Center", title: "Recurse Center", offer_links: ["https://www.recurse.com/apply"]}
+  - {name: "La Caixa INPhINIT", type: page, url: "https://fellowships.lacaixafoundation.org/", org: "La Caixa", title: "La Caixa INPhINIT Doctoral Fellowships", offer_links: []}
+  - {name: "Marie Sklodowska-Curie Actions", type: page, url: "https://marie-sklodowska-curie-actions.ec.europa.eu/actions", org: "European Commission", title: "Marie Sklodowska-Curie Actions", offer_links: []}
+
+  # --- additional programs ------------------------------------------------
+  - {name: "CHAI", type: page, url: "https://humancompatible.ai/", org: "CHAI", title: "CHAI Research Program", offer_links: []}
+  - name: "Schmidt Science Fellows"
+    type: page
+    url: "https://www.schmidtsciencefellows.org/"
+    org: "Schmidt Futures"
+    title: "Schmidt Science Fellows"
+    offer_links: ["https://schmidtsciencefellows.org/program"]
+  - {name: "MSR Academic Programs", type: page, url: "https://www.microsoft.com/en-us/research/academic-programs/", org: "Microsoft Research", title: "MSR Academic Programs & Fellowships", offer_links: []}
+  - {name: "METR", type: page, url: "https://metr.org/", org: "METR", title: "METR Research Program", offer_links: []}
+  - {name: "Palisade Research", type: page, url: "https://palisaderesearch.org/", org: "Palisade Research", title: "Palisade Research Program", offer_links: []}
+  - {name: "AI Safety Tokyo", type: page, url: "https://aisafety.tokyo/", org: "AI Safety Tokyo", title: "AI Safety Tokyo Program", offer_links: []}
+  - {name: "Cooperative AI Foundation", type: page, url: "https://www.cooperativeai.org/", org: "Cooperative AI Foundation", title: "Cooperative AI Research Grants", offer_links: []}
+  - {name: "Rethink Priorities", type: page, url: "https://rethinkpriorities.org/", org: "Rethink Priorities", title: "Rethink Priorities Research Program", offer_links: []}
+  - {name: "Alignment Research Center", type: page, url: "https://alignment.org/", org: "ARC", title: "Alignment Research Center Program", offer_links: []}
+  - name: "Future of Life Institute"
+    type: page
+    url: "https://futureoflife.org/"
+    org: "FLI"
+    title: "FLI Grants & Programs"
+    offer_links: ["https://futureoflife.org/our-work/grantmaking-work/fellowships/"]
+
+  # --- global AI safety / ML programs (URLs verified live) ----------------
+  - {name: "UK AI Security Institute", type: page, url: "https://www.aisi.gov.uk/", org: "UK AISI", title: "UK AI Security Institute", offer_links: []}
+  - {name: "GovAI", type: page, url: "https://www.governance.ai/", org: "GovAI", title: "Centre for the Governance of AI", offer_links: []}
+  - {name: "CSER", type: page, url: "https://www.cser.ac.uk/", org: "CSER", title: "Centre for the Study of Existential Risk", offer_links: []}
+  - {name: "Leverhulme CFI", type: page, url: "https://www.lcfi.ac.uk/", org: "CFI", title: "Leverhulme Centre for the Future of Intelligence", offer_links: []}
+  - {name: "CLR", type: page, url: "https://longtermrisk.org/", org: "CLR", title: "Center on Long-Term Risk", offer_links: []}
+  - {name: "Conjecture", type: page, url: "https://www.conjecture.dev/", org: "Conjecture", title: "Conjecture Research", offer_links: []}
+  - {name: "Goodfire", type: page, url: "https://www.goodfire.ai/", org: "Goodfire", title: "Goodfire Research", offer_links: []}
+  - name: "Constellation"
+    type: page
+    url: "https://www.constellation.org/"
+    org: "Constellation"
+    title: "Constellation Programs"
+    offer_links: ["https://constellation.org/programs/astra", "https://constellation.org/programs/visiting-fellowship"]
+  - {name: "Timaeus", type: page, url: "https://timaeus.co/", org: "Timaeus", title: "Timaeus Fellowship", offer_links: []}
+  - {name: "LISA", type: page, url: "https://www.lisafoundation.org/", org: "LISA", title: "London Initiative for Safe AI", offer_links: []}
+  - {name: "SPAR AI", type: page, url: "https://www.sparai.org/", org: "SPAR", title: "SPAR AI Research Program", offer_links: []}
+  - {name: "Epoch AI", type: page, url: "https://epoch.ai/", org: "Epoch AI", title: "Epoch AI Research", offer_links: []}
+  - {name: "Schmidt Sciences", type: page, url: "https://www.schmidtsciences.org/", org: "Schmidt Sciences", title: "Schmidt Sciences AI Programs", offer_links: []}
+  - name: "Vector Institute"
+    type: page
+    url: "https://vectorinstitute.ai/"
+    org: "Vector Institute"
+    title: "Vector Institute Fellowships"
+    offer_links: ["https://vectorinstitute.ai/programs/fellowships/"]
+  - {name: "Mila", type: page, url: "https://mila.quebec/en/", org: "Mila", title: "Mila Research Program", offer_links: []}
+  - {name: "Amii", type: page, url: "https://www.amii.ca/", org: "Amii", title: "Amii Research Program", offer_links: []}
+  - {name: "ETH AI Center", type: page, url: "https://ai.ethz.ch/", org: "ETH AI Center", title: "ETH AI Center Fellowships", offer_links: []}
+  - {name: "ELLIS", type: page, url: "https://ellis.eu/", org: "ELLIS", title: "ELLIS PhD & Postdoc Program", offer_links: []}
+  - {name: "NVIDIA Graduate Fellowships", type: page, url: "https://www.nvidia.com/en-us/research/graduate-fellowships/", org: "NVIDIA", title: "NVIDIA Graduate Fellowship", offer_links: []}
+  - name: "OpenMined"
+    type: page
+    url: "https://www.openmined.org/"
+    org: "OpenMined"
+    title: "OpenMined Programs"
+    offer_links: ["https://www.openmined.org/programs/nairr"]
+  - {name: "Masakhane", type: page, url: "https://www.masakhane.io/", org: "Masakhane", title: "Masakhane NLP Research", offer_links: []}
+  - {name: "NIST AISI", type: page, url: "https://www.nist.gov/aisi", org: "NIST AISI", title: "NIST AI Safety Institute", offer_links: []}
+
+  # --- direct ATS feeds (specific, active offers) -------------------------
+  - {name: "Anthropic", type: greenhouse, slug: anthropic}
+  - {name: "OpenAI", type: ashby, slug: openai}
+  - {name: "Cohere", type: ashby, slug: cohere}
+  - {name: "Allen Institute for AI", type: greenhouse, slug: thealleninstitute}
+  - {name: "METR (offers)", type: lever, slug: metr}
+  - {name: "Apollo Research (offers)", type: lever, slug: apolloresearch}
+  - {name: "UK AISI (offers)", type: greenhouse, slug: aisi}
+  - {name: "Goodfire (offers)", type: greenhouse, slug: goodfire}
+  - {name: "Constellation (offers)", type: ashby, slug: constellation}
+  - {name: "Vector Institute (offers)", type: ashby, slug: vector}
+
+reference_links:
+  - {name: "OpenAI Residency", url: "https://openai.com/residency/"}
+  - {name: "80,000 Hours job board", url: "https://80000hours.org/job-board/"}
+  - {name: "Euraxess jobs (EU research)", url: "https://euraxess.ec.europa.eu/jobs/search"}
+  - {name: "Academic Positions", url: "https://academicpositions.com/find-jobs"}
+  - {name: "FindAPhD", url: "https://www.findaphd.com/phds/"}
+  - {name: "Nature Careers", url: "https://www.nature.com/naturecareers/jobs/"}
+  - {name: "Hugging Face jobs", url: "https://huggingface.co/jobs"}
+  - {name: "Vector Institute careers", url: "https://vectorinstitute.ai/careers/"}
+  - {name: "Mila careers", url: "https://mila.quebec/en/"}
+  - {name: "Google DeepMind careers", url: "https://deepmind.google/about/careers/"}
+  - {name: "AI Safety Connect (map)", url: "https://aisafety.world/"}
+  - {name: "Open Philanthropy", url: "https://www.openphilanthropy.org/"}
+  - {name: "Survival and Flourishing Fund", url: "https://survivalandflourishing.fund/"}
+  - {name: "KAUST", url: "https://www.kaust.edu.sa/en/"}
+  - {name: "A*STAR (Singapore)", url: "https://www.a-star.edu.sg/"}
+  - {name: "RIKEN", url: "https://www.riken.jp/en/careers/"}
+  - {name: "Sea AI Lab", url: "https://sail.sea.com/"}
+  - {name: "BAAI", url: "https://www.baai.ac.cn/english.html"}

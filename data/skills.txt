@@ -1,0 +1,39 @@
+python
+pytorch
+tensorflow
+scikit-learn
+numpy
+pandas
+machine learning
+deep learning
+neural network
+transformer
+transformers
+large language model
+llm
+nlp
+natural language processing
+foundation model
+computer vision
+tabular
+gradient boosting
+time series
+forecasting
+uncertainty quantification
+anomaly detection
+feature engineering
+model evaluation
+hyperparameter optimization
+retrieval
+rag
+embedding
+prompt
+data science
+mlops
+docker
+git
+sql
+linux
+publication
+phd
+research

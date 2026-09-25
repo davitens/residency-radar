@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Residence Finder — {{ programs|length }} programs</title>
+<style>
+  :root { --line: #e2e2e2; --ink: #1a1a1a; --muted: #666; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: var(--ink); }
+  header { padding: 24px 20px 12px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  header p { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+  input#q { width: 100%; max-width: 420px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; }
+  main { padding: 0 20px 40px; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { cursor: pointer; user-select: none; white-space: nowrap; font-size: 13px; color: var(--muted); }
+  th[data-k]:hover { color: var(--ink); }
+  td.num { font-variant-numeric: tabular-nums; font-weight: 600; }
+  a { color: #0645ad; }
+  .why { color: #1b5e20; font-size: 13px; }
+  .gap { color: #a15c00; font-size: 13px; }
+  tbody tr:hover { background: #fafafa; }
+  section.refs { margin-top: 32px; padding-top: 16px; border-top: 2px solid var(--line); }
+  section.refs h2 { font-size: 15px; margin: 0 0 8px; }
+  section.refs ul { margin: 0; padding-left: 18px; columns: 2; }
+  section.refs li { margin: 3px 0; }
+  .st { font-size: 12px; padding: 1px 7px; border-radius: 10px; background: #eee; color: #444; }
+  .st-open { background: #e3f5e3; color: #1b5e20; }
+  .st-rolling { background: #e6f0fb; color: #0b4f8a; }
+  .st-unknown { background: #fdf3e0; color: #8a5a00; }
+  .st-closed { background: #fbe6e6; color: #8a1b1b; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Residence Finder</h1>
+  <p>{{ programs|length }} programs ranked against the CV · generated {{ generated }} · score = 0.55·semantic + 0.25·BM25 + 0.15·skills + 0.05·recency</p>
+  <input id="q" type="search" placeholder="Filter by program, org, or location…" autocomplete="off">
+</header>
+<main>
+<table id="t">
+  <thead>
+    <tr>
+      <th data-k="rank">#</th>
+      <th data-k="title">Program</th>
+      <th data-k="org">Org</th>
+      <th data-k="score">Score</th>
+      <th data-k="status">Status</th>
+      <th data-k="deadline">Deadline</th>
+      <th data-k="location">Location</th>
+      <th>Why / gaps</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in programs %}
+    <tr>
+      <td class="num">{{ loop.index }}</td>
+      <td><a href="{{ p.url }}" target="_blank" rel="noopener noreferrer">{{ p.title }}</a></td>
+      <td>{{ p.org }}</td>
+      <td class="num" data-v="{{ p.score }}">{{ '%.3f'|format(p.score) }}</td>
+      <td><span class="st st-{{ p.status or 'unknown' }}" title="{{ p.status_evidence or '' }}">{{ p.status or 'unknown' }}</span></td>
+      <td>{{ p.deadline or '—' }}</td>
+      <td>{{ p.location or '—' }}</td>
+      <td>
+        {% if p.reasons %}<span class="why">{{ p.reasons|join(' · ') }}</span>{% endif %}
+        {% if p.gaps %}<br><span class="gap">Gaps: {{ p.gaps|join(' · ') }}</span>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if programs_open %}
+<section class="refs">
+  <h2>Open programs (apply anytime) — {{ programs_open|length }}</h2>
+  <ul>
+    {% for p in programs_open %}
+    <li><a href="{{ p.url }}" target="_blank" rel="noopener noreferrer">{{ p.title }}</a> — <span class="st st-{{ p.status or 'unknown' }}">{{ p.status or 'unknown' }}</span>{% if p.score %} · {{ '%.3f'|format(p.score) }}{% endif %}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% if manual %}
+<section class="refs">
+  <h2>Programs without a specific open posting ({{ manual|length }}) — check manually, not ranked</h2>
+  <ul>
+    {% for p in manual %}
+    <li><a href="{{ p.url }}" target="_blank" rel="noopener noreferrer">{{ p.title }}</a> — <span class="st st-{{ p.status or 'unknown' }}">{{ p.status or 'unknown' }}</span></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% if closed %}
+<section class="refs">
+  <h2>Closed / watchlist ({{ closed|length }}) — not ranked</h2>
+  <ul>
+    {% for p in closed %}
+    <li><a href="{{ p.url }}" target="_blank" rel="noopener noreferrer">{{ p.title }}</a> — <span class="gap">{{ p.status_evidence or 'closed' }}</span></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% if reference_links %}
+<section class="refs">
+  <h2>Job boards to check (not ranked)</h2>
+  <ul>
+    {% for link in reference_links %}
+    <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.name }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+</main>
+<script>
+  const tbody = document.querySelector('#t tbody');
+  const rows = () => Array.from(tbody.querySelectorAll('tr'));
+  document.querySelectorAll('th[data-k]').forEach(th => {
+    let asc = th.dataset.k === 'rank';
+    th.addEventListener('click', () => {
+      const k = th.dataset.k;
+      const sorted = rows().sort((a, b) => {
+        const av = k === 'rank' ? parseInt(a.cells[0].textContent)
+                 : k === 'score' ? parseFloat(a.querySelector('td.num[data-v]').dataset.v)
+                 : a.querySelector(`td:nth-child(${th.cellIndex + 1})`).textContent.toLowerCase();
+        const bv = k === 'rank' ? parseInt(b.cells[0].textContent)
+                 : k === 'score' ? parseFloat(b.querySelector('td.num[data-v]').dataset.v)
+                 : b.querySelector(`td:nth-child(${th.cellIndex + 1})`).textContent.toLowerCase();
+        return (av < bv ? -1 : av > bv ? 1 : 0) * (asc ? 1 : -1);
+      });
+      sorted.forEach(r => tbody.appendChild(r));
+      asc = !asc;
+    });
+  });
+  document.getElementById('q').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    rows().forEach(r => { r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none'; });
+  });
+</script>
+</body>
+</html>
