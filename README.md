@@ -81,25 +81,39 @@ score = 0.55·semantic + 0.25·BM25 + 0.15·skills + 0.05·recency
 git clone git@github.com:davitens/residency-radar.git
 cd residency-radar
 
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
+# Drop your CV (LaTeX or PDF, any name) into cv/, then run everything:
+cp /path/to/my_cv.pdf cv/
+./run.sh
+```
 
-# 1. Put your CV at ./cv.tex (LaTeX) or ./cv.pdf, then extract it to text
-.venv/bin/python -m src.cv_to_text              # -> data/cv.txt
-#    or: .venv/bin/python -m src.cv_to_text --tex /path/to/cv.pdf --out data/cv.txt
+`run.sh` creates the venv and installs deps on first run, picks up whatever CV is
+in `cv/`, then extracts → fetches → ranks → builds the site in one shot. Output:
+`site/index.html`, `exports/`, and `data/ranked*.json`.
+
+Serve the result:
+
+```bash
+.venv/bin/python -m http.server -d site 8000    # http://localhost:8000
+```
+
+### Running the steps manually
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+
+# 1. CV -> text
+.venv/bin/python -m src.cv_to_text --tex cv/cv.pdf --out data/cv.txt
 
 # 2. Discover programs -> data/programs.json
-#    (optional LLM enrichment of deadline/location/eligibility/status when Ollama is running;
-#     set ENABLE_ENRICH=0 to skip)
+#    (optional LLM enrichment when Ollama is running; set ENABLE_ENRICH=0 to skip)
 .venv/bin/python -m src.fetch
 
 # 3. Rank against the CV -> data/ranked*.json
 .venv/bin/python -m src.match
 #    with LLM why/gaps (top 20):  ENABLE_LLM=1 .venv/bin/python -m src.match
 
-# 4. Build the site + exports -> site/index.html, exports/recommendations.{md,csv,json}
+# 4. Build the site + exports
 .venv/bin/python -m src.build_site
-.venv/bin/python -m http.server -d site 8000    # http://localhost:8000
 ```
 
 Run a second CV without clobbering the first:

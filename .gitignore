@@ -1,6 +1,8 @@
-# local CV / personal data
-cv.tex
-cv.pdf
+# local CV / personal data (drop your CV in cv/, any name)
+cv/*
+!cv/.gitkeep
+*cv.tex
+*cv.pdf
 data/cv*.txt
 
 # generated data
